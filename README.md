@@ -2,6 +2,8 @@
 
 This repository contains the code I use to automatically update my videos' metadata on YouTube, including: titles, descriptions, tags, etc.
 
+[mCoding YouTube channel](https://www.youtube.com/c/mCodingWithJamesMurphy)
+
 The code in this repository is MIT licensed, see the file named LICENSE.
 
 ### Disclaimer
