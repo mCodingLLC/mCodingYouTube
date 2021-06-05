@@ -23,6 +23,8 @@ If you would like an official set of samples for how to use the YouTube Data API
 The official YouTube Data API documentation (not language specific) can be found at: https://developers.google.com/youtube/v3/docs.
 
 ### Trying to follow my YouTube video?
+Video: [I Used the YouTube API to Update My Video Descriptions](https://youtu.be/0F9sdRtbwkE)
+
 Install dependencies (execute this from the directory containing requirements.txt):
 
 ```shell
