@@ -34,7 +34,7 @@ pip install -r requirements.txt
 Here are the important files:
 
 - app_config.py: In order to avoid publishing my secret client data, I use this config to read a non-uploaded file containing the location of my secret file. 
-  If you want to modify the code to work for yourself, you can hard-code the location of your client secret file here, or use dotenv like I did.
+  If you want to modify the code to work for yourself, you can hard-code the location of your client secret file here, or use [dotenv](https://pypi.org/project/python-dotenv/) like I did.
    
 - youtube.py: Contains the code to make an authenticated YouTube service object.
   You shouldn't need to change anything in this file.
