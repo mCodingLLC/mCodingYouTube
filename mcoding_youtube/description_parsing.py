@@ -1,5 +1,5 @@
 """
-For parsing description text into its component parts or visa-versa.
+For parsing description text into its component parts or vice versa.
 Full of horrors stemming from using YouTube as a file store.
 I accept full judgement for this terrifying and brittle parsing code.
 """
