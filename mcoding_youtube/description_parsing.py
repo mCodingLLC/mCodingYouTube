@@ -38,6 +38,10 @@ current_section_separator = "---------------------------------------------------
 current_affiliate_links = ""
 
 
+def is_donation_section_text(s: str) -> bool:
+    s = s.lower()
+    return 'patreon' in s and 'paypal' in s
+
 def description_to_parts(desc: str) -> DescriptionParts:
     sections = {}
     current_section = []
@@ -70,7 +74,7 @@ def description_to_parts(desc: str) -> DescriptionParts:
             parts.community_links = combine_lines(section_lines)
         elif title == donation_title:
             parts.donation_links = combine_lines(section_lines)
-            assert 'patreon' in parts.donation_links.lower()
+            assert is_donation_section_text(parts.donation_links)
         elif title == affiliate_title:
             parts.affiliate_links = combine_lines(section_lines)
         elif title == chapters_title:
