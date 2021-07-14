@@ -3,7 +3,7 @@ For parsing description text into its component parts or vice versa.
 Full of horrors stemming from using YouTube as a file store.
 I accept full judgement for this terrifying and brittle parsing code.
 """
-
+import re
 from dataclasses import dataclass
 from typing import Optional
 
@@ -41,6 +41,12 @@ current_affiliate_links = ""
 def is_donation_section_text(s: str) -> bool:
     s = s.lower()
     return 'patreon' in s and 'paypal' in s
+
+
+def is_sponsored_section_text(s: str) -> bool:
+    s = s.lower()
+    return bool(re.search(r'try\s+\w+:\s+http', s)) or ('thanks' in s and 'sponsoring' in s)
+
 
 def description_to_parts(desc: str) -> DescriptionParts:
     sections = {}
@@ -84,18 +90,23 @@ def description_to_parts(desc: str) -> DescriptionParts:
         else:
             raise ValueError(f"Unexpected title {title}")
 
-    # rule: donation links at top, unless sponsor exists, in which sponsor at top
+    # figure out what section without title is
     assert "" in sections, sections.keys()
     untitled_section = sections.pop("")
-    if donation_title in sections:
-        parts.sponsored_links = combine_lines(untitled_section)
+    section_text = combine_lines(untitled_section)
+    if is_sponsored_section_text(section_text):
+        parts.sponsored_links = section_text
+    elif is_donation_section_text(section_text):
+        parts.donation_links = section_text
     else:
-        parts.donation_links = combine_lines(untitled_section)
+        if parts.description is not None:
+            raise ValueError(f"Description should be empty: {parts.description=}")
+        parts.description = section_text
 
     return parts
 
 
-def parts_to_description(parts: DescriptionParts) -> str:
+def parts_to_description_v1(parts: DescriptionParts) -> str:
     desc = ""
     if parts.sponsored_links:
         desc += f'{parts.sponsored_links}\n'
@@ -114,7 +125,38 @@ def parts_to_description(parts: DescriptionParts) -> str:
     if parts.sponsored_links:
         desc += f'\n{donation_title}\n{current_section_separator}\n{parts.donation_links}\n'
 
+    assert parts.community_links
     desc += f'\n{community_title}\n{current_section_separator}\n{parts.community_links}\n'
+
+    if parts.music:
+        desc += f'\n{music_title}\n{current_section_separator}\n{parts.music}\n'
+
+    if parts.chapters:
+        desc += f'\n{chapters_title}\n{current_section_separator}\n{parts.chapters}\n'
+
+    return desc.strip()
+
+
+def parts_to_description_v2(parts: DescriptionParts) -> str:
+    desc = ""
+    if parts.sponsored_links:
+        desc += f'{parts.sponsored_links}\n'
+        desc += f'\n{description_title}\n{current_section_separator}\n'
+
+    assert parts.description
+    desc += f'{parts.description}\n\n{mcoding_title}\n'
+
+    if parts.video_links:
+        desc += f'\n{parts.video_links}\n'
+
+    if parts.affiliate_links:
+        desc += f'\n{affiliate_title}\n{current_section_separator}\n{parts.affiliate_links}\n'
+
+    if parts.donation_links:
+        desc += f'\n{donation_title}\n{current_section_separator}\n{parts.donation_links}\n'
+
+    if parts.community_links:
+        desc += f'\n{community_title}\n{current_section_separator}\n{parts.community_links}\n'
 
     if parts.music:
         desc += f'\n{music_title}\n{current_section_separator}\n{parts.music}\n'

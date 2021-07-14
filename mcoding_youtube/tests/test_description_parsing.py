@@ -1,6 +1,6 @@
 """Tests for description parsing."""
 
-from mcoding_youtube.description_parsing import parts_to_description, description_to_parts
+from mcoding_youtube.description_parsing import parts_to_description_v1, description_to_parts
 
 sample_description_0 = """Sign up on Patreon to get your donor role and early access to videos!
 https://patreon.com/mCoding
@@ -136,7 +136,7 @@ CHAPTERS
 
 
 def test_deconstruct_reconstruct():
-    assert parts_to_description(description_to_parts(sample_description_0)) == sample_description_0
-    assert parts_to_description(description_to_parts(sample_description_1)) == sample_description_1
-    assert parts_to_description(description_to_parts(sample_description_2)) == sample_description_2
-    assert parts_to_description(description_to_parts(sample_description_3)) == sample_description_3
+    assert parts_to_description_v1(description_to_parts(sample_description_0)) == sample_description_0
+    assert parts_to_description_v1(description_to_parts(sample_description_1)) == sample_description_1
+    assert parts_to_description_v1(description_to_parts(sample_description_2)) == sample_description_2
+    assert parts_to_description_v1(description_to_parts(sample_description_3)) == sample_description_3
