@@ -40,6 +40,10 @@ def update_description_on_youtube(youtube, video_id, new_description):
     # video resource. This code extracts the snippet from that resource.
     videos_list_snippet = videos_list_response['items'][0]['snippet']
 
+    if videos_list_snippet['description'] == new_description:
+        print(f'Video {video_id}: new description and old description are the same, skipping...')
+        return
+
     if not confirm_diff(old=videos_list_snippet['description'], new=new_description):
         print('diff rejected, aborting program...')
         sys.exit(0)
